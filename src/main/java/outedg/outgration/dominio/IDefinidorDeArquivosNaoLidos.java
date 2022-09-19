@@ -1,7 +1,7 @@
-package outedg.outgration;
+package outedg.outgration.dominio;
 
 import java.util.List;
 
 public interface IDefinidorDeArquivosNaoLidos {
-    public List<String> obter();
+    List<String> definir();
 }

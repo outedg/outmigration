@@ -1,4 +1,4 @@
-package outedg.outgration;
+package outedg.outgration.dominio;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,8 +9,8 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import outedg.outgration.Migrate;
 
-import javax.lang.model.util.Types;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,7 +22,9 @@ public class MigrateTest {
     @Mock
     private IRodadorDeArquivo rodador;
     @Mock
-    private IDefinidorDeArquivosNaoLidos definidor;
+    private IDefinidorDeArquivosNaoLidos definidorDeArquivosNaoLidos;
+    @Mock
+    private IRepositorioDeVersoes repositorioDeVersao;
     private List<String> arquivos;
     private String segundoArquivo;
     private String primeiroArquivo;
@@ -32,10 +34,9 @@ public class MigrateTest {
         primeiroArquivo = "primeiroarquivo.sql";
         segundoArquivo = "segundoarquivo.sql";
         arquivos = List.of(primeiroArquivo, segundoArquivo);
-
-        Mockito.when(definidor.obter()).thenReturn(arquivos);
-
-        migrador = new Migrate(rodador, definidor);
+        Mockito.when(definidorDeArquivosNaoLidos.definir()).thenReturn(arquivos);
+        repositorioDeVersao = Mockito.mock(IRepositorioDeVersoes.class);
+        migrador = new Migrate(rodador, definidorDeArquivosNaoLidos, repositorioDeVersao);
     }
 
     @Test
@@ -62,6 +63,14 @@ public class MigrateTest {
 
         migrador.migrate();
 
-        Mockito.verify(definidor, Mockito.times(1)).obter();
+        Mockito.verify(definidorDeArquivosNaoLidos, Mockito.times(1)).definir();
+    }
+
+    @Test
+    public void se_rodou_tem_que_salvar() {
+
+        migrador.migrate();
+
+        Mockito.verify(repositorioDeVersao, Mockito.times(2)).save(Mockito.any(Versao.class));
     }
 }
