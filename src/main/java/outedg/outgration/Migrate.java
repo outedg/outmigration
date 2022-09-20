@@ -31,5 +31,7 @@ public class Migrate {
             repositorioDeVersoes.save(new Versao(arquivo));
             System.out.println(AnsiOutput.toString(AnsiColor.GREEN, arquivo, AnsiColor.DEFAULT));
         }
+        System.out.println(AnsiOutput.toString(AnsiColor.GREEN, "Saindo da aplicação", AnsiColor.DEFAULT));
+
     }
 }

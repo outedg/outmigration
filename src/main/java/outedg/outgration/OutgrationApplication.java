@@ -12,8 +12,7 @@ public class OutgrationApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        System.out.println("Hello people");
-
+    public void run(String... args) {
+        System.out.println("Outedg Migration TOOLS!!");
     }
 }
